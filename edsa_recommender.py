@@ -45,12 +45,24 @@ def main():
 
     # DO NOT REMOVE the 'Recommender System' option below, however,
     # you are welcome to add more options to enrich your app.
-    page_options = ["Recommender System","Solution Overview"]
+    page_options = ["Home Page","Recommender System","Solution Overview", "About Us"]   
 
     # -------------------------------------------------------------------
     # ----------- !! THIS CODE MUST NOT BE ALTERED !! -------------------
     # -------------------------------------------------------------------
     page_selection = st.sidebar.selectbox("Choose Option", page_options)
+    if page_selection == "Home Page":
+        st.write('# Half Moon')
+        st.write("# Movie Recommendations")
+        #st.markdown("![Alt Text](https://media.giphy.com/media/xUNd9OwkwTb2GhJ7eo/giphy.gif)")
+        st.write('In today’s technology driven world, recommender systems \
+            are socially and economically critical to ensure that individuals can make optimised choices \
+                surrounding the content they engage with on a daily basis. One application where this is especially \
+                    true is movie recommendations; where intelligent algorithms can help viewers find great titles from tens of thousands of options.')
+        
+        st.write("##### Our Mission:")
+        st.write("")
+        st.write("##### our Vision")
     if page_selection == "Recommender System":
         # Header contents
         st.write('# Movie Recommender Engine')
@@ -104,9 +116,12 @@ def main():
         st.title("Solution Overview")
         st.write("Describe your winning approach on this page")
 
+    if page_selection == "About Us":
+        st.write('# Half Moon')
+        st.write('#### *Transforming ideas into reality*')
+        
     # You may want to add more sections here for aspects such as an EDA,
     # or to provide your business pitch.
-
 
 if __name__ == '__main__':
     main()
