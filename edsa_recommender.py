@@ -65,7 +65,7 @@ def main():
 
     # DO NOT REMOVE the 'Recommender System' option below, however,
     # you are welcome to add more options to enrich your app.
-
+    st.image('resources/imgs/wise.png',use_column_width=True)
     page_options = ["Recommender System","Solution Overview","Movie Statistics", "About Us"]   
 
     # -------------------------------------------------------------------
@@ -156,7 +156,7 @@ def main():
 
         #Ploting year data
         fig = plt.figure(figsize=(10,4))
-        sns.histplot(year, kde = True)
+        sns.histplot(year, kde = True, color = "#ffffff")
         plt.xlabel('Year',color = 'white')
         plt.ylabel('Count',color = 'white')
         plt.xlim(left=1900, right = 2022)
@@ -168,7 +168,7 @@ def main():
         #movie ratings distribution Plot
         st.title('Movie Ratings Distribution') 
         fig = plt.figure(figsize=(10,4))
-        sns.boxplot(x = "rating", data=ratings,color= '#9C011C')
+        sns.boxplot(x = "rating", data=ratings,color= "#ffffff")
         plt.title('Movie ratings distribution', fontweight = 'bold')
         plt.xlabel('Rating', color = 'white')
         plt.ylabel('Count', color = 'white')
@@ -179,7 +179,7 @@ def main():
         #movie runtime Distribution 
         st.markdown("<h1 style = 'text-align: center;'>Movie Runtime Distribution</h1>", unsafe_allow_html=True)
         fig = plt.figure(figsize=(10,4))
-        sns.histplot(imdb_data_runtime, kde = True, color = '#9C011C')
+        sns.histplot(imdb_data_runtime, kde = True, color = "#ffffff")
         plt.xlabel('Runtime (min)',color='white')
         plt.ylabel('Count', color = 'white')
         plt.xlim(left = 0,right = 250)
