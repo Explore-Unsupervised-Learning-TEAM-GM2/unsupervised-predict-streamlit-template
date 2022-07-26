@@ -31,6 +31,7 @@ from sqlalchemy import true
 import streamlit as st
 
 # Script dependencies
+#import surprise
 import pandas as pd
 import numpy as np
 import pickle
@@ -39,7 +40,7 @@ from surprise import Reader, Dataset
 from surprise import SVD, NormalPredictor, BaselineOnly, KNNBasic, NMF
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
-from sympy import false
+#from sympy import false
 
 # Importing data
 movies_df = pd.read_csv('resources/data/movies.csv',sep = ',')
@@ -143,7 +144,7 @@ def collab_model(movie_list,top_n=10):
         rating_pred = model.predict(movie_id,user_id, verbose=False)
     # add the prediction to the list of predictions
         pred_series.append([name, rating_pred.est, rating_real])
-        predicted = pd.DataFrame(pred_series, columns = ['title','rating', 'actual_rating']) #
+        predicted = pd.DataFrame(pred_series, columns = ['title','rating', 'actual_rating']) #actual rating used for checking previous ratings for movie id
         predicted = predicted.sort_values(by = ['rating'], ascending = False)
   
 

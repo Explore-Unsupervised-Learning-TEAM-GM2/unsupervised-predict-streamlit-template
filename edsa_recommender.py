@@ -35,6 +35,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import re
 import matplotlib as mpl
+import sympy
 from sympy import continued_fraction_reduce
 mpl.rcParams['figure.dpi'] = 130
 
