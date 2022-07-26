@@ -27,6 +27,7 @@
 """
 # Streamlit dependencies
 import streamlit as st
+from PIL import Image
 
 # Data handling dependencies
 import pandas as pd
@@ -65,7 +66,10 @@ def main():
 
     # DO NOT REMOVE the 'Recommender System' option below, however,
     # you are welcome to add more options to enrich your app.
-    st.image('resources/imgs/wise.png',use_column_width=True)
+    background = Image.open('resources/imgs/wise.png')
+    col1, col2, col3 = st.columns([0.2, 5, 0.2])
+    col2.image(background, use_column_width=True)
+    
     page_options = ["Recommender System","Solution Overview","Movie Statistics", "About Us"]   
 
     # -------------------------------------------------------------------
@@ -156,7 +160,7 @@ def main():
 
         #Ploting year data
         fig = plt.figure(figsize=(10,4))
-        sns.histplot(year, kde = True, color = "#ffffff")
+        sns.histplot(year, kde = True, color = "#02b8f6")
         plt.xlabel('Year',color = 'white')
         plt.ylabel('Count',color = 'white')
         plt.xlim(left=1900, right = 2022)
@@ -166,9 +170,9 @@ def main():
         
 
         #movie ratings distribution Plot
-        st.title('Movie Ratings Distribution') 
+        st.title('Movie Ratings Distribution', fontweight = 'bold', color = 'white') 
         fig = plt.figure(figsize=(10,4))
-        sns.boxplot(x = "rating", data=ratings,color= "#ffffff")
+        sns.boxplot(x = "rating", data=ratings,color= "#02b8f6")
         plt.title('Movie ratings distribution', fontweight = 'bold')
         plt.xlabel('Rating', color = 'white')
         plt.ylabel('Count', color = 'white')
@@ -179,11 +183,11 @@ def main():
         #movie runtime Distribution 
         st.markdown("<h1 style = 'text-align: center;'>Movie Runtime Distribution</h1>", unsafe_allow_html=True)
         fig = plt.figure(figsize=(10,4))
-        sns.histplot(imdb_data_runtime, kde = True, color = "#ffffff")
+        sns.histplot(imdb_data_runtime, kde = True, color = "#02b8f6")
         plt.xlabel('Runtime (min)',color='white')
         plt.ylabel('Count', color = 'white')
         plt.xlim(left = 0,right = 250)
-        plt.title('Movie Runtime Distribution', fontweight = 'bold' )
+        plt.title('Movie Runtime Distribution', fontweight = 'bold', color = 'white')
         st.plotly_chart(fig, use_container_width=True)
         st.write(f'Average rating  database: {round(np.mean(imdb_data_runtime),2)}min with a symetrical distribution')
     #---------------------------------------------------------------------------------------------------------------------------------------------
