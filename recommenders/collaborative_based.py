@@ -26,6 +26,9 @@
     filtering algorithm for rating predictions on Movie data.
 
 """
+# Streamlit dependencies
+from sqlalchemy import true
+import streamlit as st
 
 # Script dependencies
 import pandas as pd
@@ -36,11 +39,13 @@ from surprise import Reader, Dataset
 from surprise import SVD, NormalPredictor, BaselineOnly, KNNBasic, NMF
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
+from sympy import false
 
 # Importing data
 movies_df = pd.read_csv('resources/data/movies.csv',sep = ',')
 ratings_df = pd.read_csv('resources/data/ratings.csv')
 ratings_df.drop(['timestamp'], axis=1,inplace=True)
+ratings_df = ratings_df
 
 # We make use of an SVD model trained on a subset of the MovieLens 10k dataset.
 model=pickle.load(open('resources/models/SVD.pkl', 'rb'))
@@ -117,32 +122,36 @@ def collab_model(movie_list,top_n=10):
         Titles of the top-n movie recommendations to the user.
 
     """
+    import scipy as sp
 
-    indices = pd.Series(movies_df['title'])
+  
     movie_ids = pred_movies(movie_list)
     df_init_users = ratings_df[ratings_df['userId']==movie_ids[0]]
-    for i in movie_ids :
+    
+    for i in movie_ids:
         df_init_users=df_init_users.append(ratings_df[ratings_df['userId']==i])
-    # Getting the cosine similarity matrix
-    cosine_sim = cosine_similarity(np.array(df_init_users), np.array(df_init_users))
-    idx_1 = indices[indices == movie_list[0]].index[0]
-    idx_2 = indices[indices == movie_list[1]].index[0]
-    idx_3 = indices[indices == movie_list[2]].index[0]
-    # Creating a Series with the similarity scores in descending order
-    rank_1 = cosine_sim[idx_1]
-    rank_2 = cosine_sim[idx_2]
-    rank_3 = cosine_sim[idx_3]
-    # Calculating the scores
-    score_series_1 = pd.Series(rank_1).sort_values(ascending = False)
-    score_series_2 = pd.Series(rank_2).sort_values(ascending = False)
-    score_series_3 = pd.Series(rank_3).sort_values(ascending = False)
-     # Appending the names of movies
-    listings = score_series_1.append(score_series_1).append(score_series_3).sort_values(ascending = False)
+    
+    
+
+    print(f'number of ratings: {df_init_users.shape[0]}')
+    # create the predictions
+    pred_series= []
+    for movie_id, name, user_id in zip(movie_ids, movies_df['title'],df_init_users['userId']):
+        rating_real =ratings_df.query(f'movieId == {movie_id}')['rating'].values[0] if movie_id in df_init_users['movieId'].values else 0
+    # generate the prediction
+    # generate the prediction
+        rating_pred = model.predict(movie_id,user_id, verbose=False)
+    # add the prediction to the list of predictions
+        pred_series.append([name, rating_pred.est, rating_real])
+        predicted = pd.DataFrame(pred_series, columns = ['title','rating', 'actual_rating']) #
+        predicted = predicted.sort_values(by = ['rating'], ascending = False)
+  
+
+    #title list
+    title_list = predicted['title'].tolist()
     recommended_movies = []
-    # Choose top 50
-    top_50_indexes = list(listings.iloc[1:50].index)
-    # Removing chosen movies
-    top_indexes = np.setdiff1d(top_50_indexes,[idx_1,idx_2,idx_3])
-    for i in top_indexes[:top_n]:
-        recommended_movies.append(list(movies_df['title'])[i])
+
+    for i in title_list[:top_n]:
+        recommended_movies.append(i)
     return recommended_movies
+ 
