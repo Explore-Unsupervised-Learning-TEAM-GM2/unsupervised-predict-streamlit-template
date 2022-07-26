@@ -29,6 +29,7 @@
 
 # Script dependencies
 import os
+import streamlit as st
 import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
@@ -37,6 +38,12 @@ from sklearn.feature_extraction.text import CountVectorizer
 # Importing data
 movies = pd.read_csv('resources/data/movies.csv', sep = ',')
 ratings = pd.read_csv('resources/data/ratings.csv')
+
+
+title_cast = pd.read_csv('resources/data/imdb_data.csv')['title_cast'].str.replace('|', ' ').dropna()
+director = pd.read_csv('resources/data/imdb_data.csv')['director'].str.replace('|', ' ').dropna()
+
+
 movies.dropna(inplace=True)
 
 def data_preprocessing(subset_size):
@@ -79,28 +86,45 @@ def content_model(movie_list,top_n=10):
 
     """
     # Initializing the empty list of recommended movies
-    recommended_movies = []
     data = data_preprocessing(27000)
+    recommended_movies = []
+    
+
     # Instantiating and generating the count matrix
-    count_vec = CountVectorizer()
-    count_matrix = count_vec.fit_transform(data['keyWords'])
-    indices = pd.Series(data['title'])
+    count_vec = CountVectorizer(analyzer='word', ngram_range=(1,2),
+                                min_df=0, stop_words='english')
+    data['keyWords']= data['keyWords'].iloc[14929:25256]
+    
+
+    count_matrix = count_vec.fit_transform(data['keyWords'].dropna())
+
+    #collecting titles from the considered range
+    data['title'] = data['title'].iloc[14929:25256]
+
+    #creating dataframe for movie title indices
+    indices = pd.Series(data.dropna().reset_index(drop=True).index, index=data['title'].dropna())
+
+    #constructing a similarity matrix
     cosine_sim = cosine_similarity(count_matrix, count_matrix)
-    # Getting the index of the movie that matches the title
-    idx_1 = indices[indices == movie_list[0]].index[0]
-    idx_2 = indices[indices == movie_list[1]].index[0]
-    idx_3 = indices[indices == movie_list[2]].index[0]
-    # Creating a Series with the similarity scores in descending order
+    
+    #collecting indicess
+    idx_1 = indices[movie_list[0]]
+    idx_2 = indices[movie_list[1]]
+    idx_3 = indices[movie_list[2]]
+
+    #collecting ranks
     rank_1 = cosine_sim[idx_1]
     rank_2 = cosine_sim[idx_2]
     rank_3 = cosine_sim[idx_3]
+
     # Calculating the scores
     score_series_1 = pd.Series(rank_1).sort_values(ascending = False)
     score_series_2 = pd.Series(rank_2).sort_values(ascending = False)
     score_series_3 = pd.Series(rank_3).sort_values(ascending = False)
-    # Getting the indexes of the 10 most similar movies
-    listings = score_series_1.append(score_series_1).append(score_series_3).sort_values(ascending = False)
-
+     # Appending the names of movies
+    listings = score_series_1.append(score_series_1).append(score_series_2).append(score_series_3).sort_values(ascending = False)
+        
+    
     # Store movie names
     recommended_movies = []
     # Appending the names of movies
