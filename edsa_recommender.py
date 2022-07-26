@@ -142,13 +142,26 @@ def main():
         st.write("To build cutting edge technology that brings convinience to everyday life.")
         st.write("Our Vision")
         st.write("Develop models that makes accurate predictions with the use of past data.")
+        lindiwe = Image.open('resources/imgs/lindiwe.jpg')
+        thabang = Image.open('resources/imgs/thabang.jpg')
+        sizakele = Image.open('resources/imgs/sizakele.jpg')
+        nkoka = Image.open('resources/imgs/nkoka.jpg')
+        col1, col2, col3 , col4= st.columns([0.2, 3.5, 0.2])
+        col1.image(lindiwe, width=80)
+        col1.st.markdown('Lindiwe Songelwa')
+        col2.image(thabang, width=80)
+        col2.st.markdown('Thabang Mokoena')
+        col3.image(sizakele, width=69)
+        col2.st.markdown('Sizakele Mtsweni')
+        col4.image(nkoka, width=80)
+        col4.st.markdown('Nkoka Khosa')
 
     #---------------------------------------------------------------------------------------------------------------------------------------------------------
     if page_selection == "Movie Statistics":
         
         st.markdown("<h1 style = 'text-align: center;'>Release Year Distribution</h1>", unsafe_allow_html=True)
 
-        import plotly.express as px
+        import plotly 
         #creating a new column for year
         
         movies['year'] = [x[-1].strip('()') for x in movies.title.str.split(" ")]
