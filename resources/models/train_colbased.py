@@ -28,7 +28,8 @@ def svd_pp(save_path):
     # Loading the data frame using surprice
     data_load = surprise.Dataset.load_from_df(ratings, reader)
     # Insatntiating surpricce
-    method = SVD(n_factors = 200 , lr_all = 0.005 , reg_all = 0.02 , n_epochs = 40 , init_std_dev = 0.05)
+    method = SVD(n_epochs=40,n_factors=1000,init_std_dev=0.005,random_state=400)
+    
     # Loading a trainset into the model
     model = method.fit(data_load.build_full_trainset())
     print (f"Training completed. Saving model to: {save_path}")
