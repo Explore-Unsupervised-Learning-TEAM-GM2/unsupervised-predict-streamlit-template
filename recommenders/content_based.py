@@ -93,8 +93,7 @@ def content_model(movie_list,top_n=10):
     # Instantiating and generating the count matrix
     count_vec = CountVectorizer(analyzer='word', ngram_range=(1,2),
                                 min_df=0, stop_words='english')
-    data['keyWords']= data['keyWords'].iloc[14929:25256]
-    
+    data['keyWord'] = data['keyWords'].iloc[14929:25256]
 
     count_matrix = count_vec.fit_transform(data['keyWords'].dropna())
 
