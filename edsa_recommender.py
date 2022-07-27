@@ -26,6 +26,7 @@
 
 """
 # Streamlit dependencies
+from turtle import title
 import streamlit as st
 from PIL import Image
 
@@ -60,14 +61,13 @@ imdb_data_budget = load_movie_budget('resources/data/imdb_data.csv')
 imdb_data_runtime = load_movie_runtime('resources/data/imdb_data.csv')
 
 
-
 # App declaration
 def main():
 
     # DO NOT REMOVE the 'Recommender System' option below, however,
     # you are welcome to add more options to enrich your app.
     background = Image.open('resources/imgs/wise.png')
-    col1, col2, col3 = st.columns([0.2, 5, 0.2])
+    col1, col2, col3 = st.columns([2, 3, 2])
     col2.image(background, use_column_width=True)
     
     page_options = ["Recommender System","Solution Overview","Movie Statistics", "About Us"]   
@@ -131,37 +131,53 @@ def main():
         st.write("Describe your winning approach on this page")
     #-----------------------------------------------------------------------------------------------------------------------------------------------------------
     if page_selection == "About Us":
-        st.write('# Half Moon')
-    
+        st.title('Wise (Pty) Ltd')
+
         st.write('In today’s technology driven world, recommender systems \
             are socially and economically critical to ensure that individuals can make optimised choices \
                 surrounding the content they engage with on a daily basis. One application where this is especially \
-                    true is movie recommendations; where intelligent algorithms can help viewers find great titles from tens of thousands of options.')
-        
-        st.write("Our Mission:")
+                    true is movie recommendations; where intelligent algorithms can help viewers find great titles from tens of thousands of options.Wise was built with the latest AI technology by our team of problem solvers and innovate engineers,with the purpose of assisting streamers to find the latest hpyed content on the net without pondering too much on what binge next.')       
+
+        st.title("Our Mission:")
         st.write("To build cutting edge technology that brings convinience to everyday life.")
-        st.write("Our Vision")
+
+        st.title("Our Vision")
         st.write("Develop models that makes accurate predictions with the use of past data.")
+
+        st.title('Our Team')
         lindiwe = Image.open('resources/imgs/lindiwe.jpg')
         thabang = Image.open('resources/imgs/thabang.jpg')
         sizakele = Image.open('resources/imgs/sizakele.jpg')
-        nkoka = Image.open('resources/imgs/nkoka.jpg')
-        col1, col2, col3 , col4= st.columns([0.2, 3.5, 0.2])
-        col1.image(lindiwe, width=80)
-        col1.st.markdown('Lindiwe Songelwa')
-        col2.image(thabang, width=80)
-        col2.st.markdown('Thabang Mokoena')
-        col3.image(sizakele, width=69)
-        col2.st.markdown('Sizakele Mtsweni')
-        col4.image(nkoka, width=80)
-        col4.st.markdown('Nkoka Khosa')
+        nkoka = Image.open('resources/imgs/nkoka.jpeg')
+        col1, col2, col3 , col4= st.columns([2,2,2,2])
+        col1.image(lindiwe,'Lindiwe Songelwa\n'
+                'Data Scientist',width = 160)
+        col2.image(thabang,'Thabang Mokoena\n'
+                'Data Scientist',width = 135)
+        col3.image(sizakele,'Sizakele Mtsweni\n'
+                'Data Scientist',width = 120)
+        col4.image(nkoka,'Nkoka Khosa\n'
+                'Data Scientist', width = 200)
+
+
+        #Contact            
+        st.title('Contact Us')
+        st.subheader('South Africa – Gauteng (Head Office)')
+        st.markdown ('Telephone')
+        st.markdown('(+27)11 940 7892')
+
+        st.markdown ('E-mail')
+        st.markdown ('sales@wisetech.com')
+        st.markdown('support@wisetech.com')
+        
 
     #---------------------------------------------------------------------------------------------------------------------------------------------------------
     if page_selection == "Movie Statistics":
         
-        st.markdown("<h1 style = 'text-align: center;'>Release Year Distribution</h1>", unsafe_allow_html=True)
+        st.markdown("<h1 style = 'text-align: center;'>Release Year</h1>", unsafe_allow_html=True)
 
-        import plotly 
+        import plotly.express as px
+        from plotly.graph_objs import Layout
         #creating a new column for year
         
         movies['year'] = [x[-1].strip('()') for x in movies.title.str.split(" ")]
@@ -169,38 +185,32 @@ def main():
         num_pattern = r'^$|[a-zA-Z]|Τσιτσάνης|101次求婚|2006–2007|выбывание|پدر|Начальник|Джа|Девочки|первого'
         movies["year"] = movies["year"].replace(to_replace = num_pattern, value = np.nan, regex = True)
         year = [int(x) for x in movies["year"].dropna()]
-        
+        year = pd.DataFrame(year, columns = ["Year"])
 
         #Ploting year data
-        fig = plt.figure(figsize=(10,4))
-        sns.histplot(year, kde = True, color = "#02b8f6")
-        plt.xlabel('Year',color = 'white')
-        plt.ylabel('Count',color = 'white')
-        plt.xlim(left=1900, right = 2022)
-        plt.title('Movie Release Year Distribution', fontweight = 'bold', color = 'white',)
+        fig = px.histogram(year, x = 'Year', histnorm='percent')
+        fig.update_layout(title= 'Release Year',title_x=0.5)
+        fig.update_layout(plot_bgcolor='pink')
+        fig.update_layout(xaxis_range =[1900,2022])
         st.plotly_chart(fig, use_container_width=True)
         st.write(f'Our model was trained on few 90s movie classics and a significant number 21st century movies')
         
 
         #movie ratings distribution Plot
-        st.title('Movie Ratings Distribution', fontweight = 'bold', color = 'white') 
-        fig = plt.figure(figsize=(10,4))
-        sns.boxplot(x = "rating", data=ratings,color= "#02b8f6")
-        plt.title('Movie ratings distribution', fontweight = 'bold')
-        plt.xlabel('Rating', color = 'white')
-        plt.ylabel('Count', color = 'white')
-        plt.show()
+        st.markdown("<h1 style = 'text-align: center;'>Movie Rating</h1>", unsafe_allow_html=True)
+        fig = px.box(ratings, x = 'rating')
+        fig.update_layout(title= 'Movie Ratings',title_x=0.5)
+        fig.update_layout(plot_bgcolor='pink')
         st.plotly_chart(fig, use_container_width=True)
         st.write(f'Average rating  database: {round(np.mean(ratings["rating"]),2)} with 75% of the rating greater than 3.')
         
         #movie runtime Distribution 
-        st.markdown("<h1 style = 'text-align: center;'>Movie Runtime Distribution</h1>", unsafe_allow_html=True)
-        fig = plt.figure(figsize=(10,4))
-        sns.histplot(imdb_data_runtime, kde = True, color = "#02b8f6")
-        plt.xlabel('Runtime (min)',color='white')
-        plt.ylabel('Count', color = 'white')
-        plt.xlim(left = 0,right = 250)
-        plt.title('Movie Runtime Distribution', fontweight = 'bold', color = 'white')
+        st.markdown("<h1 style = 'text-align: center;'>Movie Runtime</h1>", unsafe_allow_html=True)
+        runtime = pd.DataFrame(imdb_data_runtime, columns=['runtime (min)'])
+        fig = px.histogram(runtime, x = 'runtime (min)', histnorm='percent')
+        fig.update_layout(title= 'Runtime',title_x=0.5)
+        fig.update_layout(plot_bgcolor='pink')
+        fig.update_layout(xaxis_range =[0,250])
         st.plotly_chart(fig, use_container_width=True)
         st.write(f'Average rating  database: {round(np.mean(imdb_data_runtime),2)}min with a symetrical distribution')
     #---------------------------------------------------------------------------------------------------------------------------------------------
