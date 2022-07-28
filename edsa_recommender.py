@@ -128,9 +128,10 @@ def main():
     # ------------- SAFE FOR ALTERING/EXTENSION -------------------
     if page_selection == "Solution Overview":
         st.title("Solution Overview")
-        st.write('Recommender systems help users select similar items when engaging with onine services \n'
-                'These systems would provide suggestions that might interest the user leading to service improvement and customers satisfaction. \n'
-                'The suggestion method is based on content and collaborative filtering approach, that captures correlation between user preferences and item features.n')
+        st.write("In today’s technology-driven world, recommender systems are socially and economically critical to ensure that individuals can make optimised choices surrounding the content they engage with on a daily basis.\n"
+                "One application where this is especially true is movie recommendations,\n"
+                "where intelligent algorithms can help viewers find great titles from tens of thousands of options.\n" 
+                "Wise was built with the latest AI technology by our team of problem solvers and innovative engineers with the purpose of assisting streamers to find the latest HD content on the net without pondering too much on what to binge next.")
         
         st.title('Content Based Filtering')
         st.write("- Content-based filtering depends on similarities between the attributes of the items.\n"
@@ -216,7 +217,7 @@ def main():
 
         #movie ratings distribution Plot
         st.markdown("<h1 style = 'text-align: center;'>Movie Rating</h1>", unsafe_allow_html=True)
-        fig = px.box(ratings, x = 'rating')
+        fig = px.histogram(ratings, x ='rating', y = 'movieId', histnorm='percent')
         fig.update_layout(title= 'Movie Ratings',title_x=0.5)
         fig.update_layout(plot_bgcolor='pink')
         st.plotly_chart(fig, use_container_width=True)
