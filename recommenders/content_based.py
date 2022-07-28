@@ -40,8 +40,8 @@ movies = pd.read_csv('resources/data/movies.csv', sep = ',')
 ratings = pd.read_csv('resources/data/ratings.csv')
 
 
-title_cast = pd.read_csv('resources/data/imdb_data.csv')['title_cast'].str.replace('|', ' ').dropna()
-director = pd.read_csv('resources/data/imdb_data.csv')['director'].str.replace('|', ' ').dropna()
+title_cast = pd.read_csv('resources/data/imdb_data.csv')['title_cast'].str.replace(r'|', ' ',regex=True).dropna()
+director = pd.read_csv('resources/data/imdb_data.csv')['director'].str.replace(r'|', ' ',regex=True).dropna()
 
 
 movies.dropna(inplace=True)
@@ -61,7 +61,7 @@ def data_preprocessing(subset_size):
 
     """
     # Split genre data into individual words.
-    movies['keyWords'] = movies['genres'].str.replace('|', ' ')
+    movies['keyWords'] = movies['genres'].str.replace(r'|', ' ',regex=True)
     # Subset of the data
     movies_subset = movies[:subset_size]
     return movies_subset
@@ -93,7 +93,8 @@ def content_model(movie_list,top_n=10):
     # Instantiating and generating the count matrix
     count_vec = CountVectorizer(analyzer='word', ngram_range=(1,2),
                                 min_df=0, stop_words='english')
-    data['keyWord'] = data['keyWords'].iloc[14929:25256]
+    data['keyWords']= data['keyWords'].iloc[14929:25256]
+   
 
     count_matrix = count_vec.fit_transform(data['keyWords'].dropna())
 
