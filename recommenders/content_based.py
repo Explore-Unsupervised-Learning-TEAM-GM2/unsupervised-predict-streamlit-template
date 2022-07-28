@@ -91,15 +91,15 @@ def content_model(movie_list,top_n=10):
     
 
     # Instantiating and generating the count matrix
-    count_vec = CountVectorizer(analyzer='word', ngram_range=(1,2),
-                                min_df=0, stop_words='english')
-    data['keyWords']= data['keyWords'].iloc[14929:25256]
+    count_vec = CountVectorizer(analyzer='word', ngram_range=(1,3),
+                                max_features=100, stop_words='english')
+    data['keyWords']= data['keyWords'][14929:25256]
    
 
     count_matrix = count_vec.fit_transform(data['keyWords'].dropna())
 
     #collecting titles from the considered range
-    data['title'] = data['title'].iloc[14929:25256]
+    data['title'] = data['title'][14929:25256]
 
     #creating dataframe for movie title indices
     indices = pd.Series(data.dropna().reset_index(drop=True).index, index=data['title'].dropna())
