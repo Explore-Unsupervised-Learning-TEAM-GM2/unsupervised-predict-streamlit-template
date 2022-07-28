@@ -38,11 +38,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 # Importing data
 movies = pd.read_csv('resources/data/movies.csv', sep = ',')
 ratings = pd.read_csv('resources/data/ratings.csv')
-
-
-title_cast = pd.read_csv('resources/data/imdb_data.csv')['title_cast'].str.replace(r'|', ' ',regex=True).dropna()
-director = pd.read_csv('resources/data/imdb_data.csv')['director'].str.replace(r'|', ' ',regex=True).dropna()
-
+imdb = pd.read_csv('resources/data/imdb_data.csv')
 
 movies.dropna(inplace=True)
 
@@ -92,10 +88,20 @@ def content_model(movie_list,top_n=10):
 
     # Instantiating and generating the count matrix
     count_vec = CountVectorizer(analyzer='word', ngram_range=(1,3),
-                                max_features=100, stop_words='english')
+                                min_df= 3, stop_words='english')
+    
+    #combinig all the text data
+    df = imdb.merge(data,on = 'movieId', how = 'right').dropna()
+    df['genres_cast_director_keywords'] = (pd.Series(df[['keyWords','title_cast','director','plot_keywords']]
+                      .fillna('')
+                      .values.tolist()).str.join(' '))
+    
+    df['genres_cast_director_keywords'] = df['genres_cast_director_keywords'].str.replace(r'|',' ', regex=True)
+    
+    #subset the data for our given range
     data['keyWords']= data['keyWords'][14929:25256]
-   
-
+    
+    #create similarity matrix
     count_matrix = count_vec.fit_transform(data['keyWords'].dropna())
 
     #collecting titles from the considered range

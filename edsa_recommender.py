@@ -133,22 +133,21 @@ def main():
                 'The suggestion method is based on content and collaborative filtering approach, that captures correlation between user preferences and item features.n')
         
         st.title('Content Based Filtering')
-        st.write("Content-based filtering It depends on similarities between the attributes of the items. It recommends products to a customer based on those that same client has previously ranked as the highest.\n"
-                "It is necessary to create a list of features for these objects.There are item profiles for each item. These features are listed in a tabular structure."
-                "Comparing what and how many features match and collect scores pick the item with the highest score.\n"
-                "The code would be built on an algorithm that will find the item that is the most similar to the given object.\n"
-                "The user will be given with the best scoring match.This approach does not consider user preferences; it simply considers item features.")
+        st.write("- Content-based filtering depends on similarities between the attributes of the items.\n"
+                "- It recommends products to customers based on those that other customers has previously rated as the highest.\n"
+                "- Each rated item has a profile.\n"
+                "- The algorithm compares item features and pick the items with the highest score.\n"
+                "- The algorithm then recommends an item that is the most similarities to the given object.\n"
+                "- This algorithm does not consider user preferences, it simply considers item features.")
 
         st.title('Collaborative Based Filtering')
-        st.write("Collaborative filtering is based on how other users have reacted to the same items.\n"
-                " It is dependent on user preferences rather than the characteristics of the product.\n" 
-                "For the purpose of gathering important data, a survey of similar users must be carried out.\n"
-                "The goods that users have selected or liked are listed in a table alongside their ratings.\n"
-                "Based on the similarities, a prediction can be produced for what the user could enjoy, based on what similar users did like.\n"
-                "In order to compare and make recommendations, the list is filtered and matched to people who utilized the same things.\n"
-                "The highest score is then suggested after everything has been tallied.\n"
-                "The main drawback to this strategy is that you need data before you can offer recommendations.\n"
-                "The model suffers from cold start, where it will make erroneous predictions or repeatedly predicting the same thing if there is no data available.")
+        st.write("- Collaborative filtering is based on how other users have reacted to the same items.\n"
+                " - It is dependent on user preferences rather than the features of the item.\n" 
+                "- The algorithm uses survey data from similar users.\n"
+                "- The dat that has been colleced is in a table alongside the user's ratings.\n"
+                "- The algorithm makes a  prediction based on what similar users liked.\n"
+                "- The main drawback to this algorithm is that you need data before you can offer recommendations.\n"
+                "- The alogorithm suffers from cold start, where it will make erroneous predictions or repeatedly predicting the same items if there is no data available.")
 
 
     #-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -178,8 +177,9 @@ def main():
 
         #Contact            
         st.title('Contact Us')
-        st.subheader('South Africa – Gauteng (Head Office)')
+        st.subheader('Head Office')
         st.markdown('Adress')
+        st.markdown('South Africa')
         st.markdown('123 smith st, Johannesburg, 2100')
         st.markdown ('Telephone')
         st.markdown('(+27)11 940 7892')
